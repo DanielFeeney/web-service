@@ -1,0 +1,61 @@
+package br.edu.ifms.services;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+
+import br.edu.ifms.entity.Animal;
+import br.edu.ifms.entity.Animais;
+
+public class ServiceClient {
+
+	private Client client;
+	
+	private WebTarget webTarget;
+	
+	private final String URL_SERVICE = "http://localhost:8080/WebServiceRest/rest/service";
+
+	public ServiceClient() {
+		this.client = ClientBuilder.newClient();;
+	}
+	
+	public String CadastrarPessoa(Animal pessoa) {
+		this.webTarget = this.client.target(URL_SERVICE).path("cadastrar");
+		Invocation.Builder invocationBuilder = this.webTarget.request("application/json; charset=UTF-8");
+		Response response = invocationBuilder.post(Entity.entity(pessoa, "application/json; charset=UTF-8"));
+		return response.readEntity(String.class);
+	}
+	
+	public String AlterarPessoa(Animal pessoa) {
+		this.webTarget = this.client.target(URL_SERVICE).path("alterar");
+		Invocation.Builder invocationBuilder = this.webTarget.request("application/json; charset=UTF-8");
+		Response response = invocationBuilder.put(Entity.entity(pessoa, "application/json; charset=UTF-8"));
+		return response.readEntity(String.class);
+	}
+	
+	public Animais ConsultarTodasPessoas() {
+		this.webTarget = this.client.target(URL_SERVICE).path("todasPessoas");
+		Invocation.Builder invocationBuilder = this.webTarget.request("application/json; charset=UTF-8");
+		Response response = invocationBuilder.get();
+		return response.readEntity(Animais.class);
+	}
+	
+	public Animal ConsultarPessoaPorCodigo(int codigo) {
+		this.webTarget = this.client.target(URL_SERVICE).path("getPessoa").path(String.valueOf(codigo));
+		Invocation.Builder invocationBuilder = this.webTarget.request("application/json; charset=UTF-8");
+		Response response = invocationBuilder.get();
+		return response.readEntity(Animal.class);
+	}
+	
+	public String ExcluirPessoaPorCodigo(int codigo) {
+		this.webTarget = this.client.target(URL_SERVICE).path("excluir").path(String.valueOf(codigo));
+		Invocation.Builder invocationBuilder = this.webTarget.request("application/json; charset=UTF-8");
+		Response response = invocationBuilder.delete();
+		return response.readEntity(String.class);
+	}
+	
+	
+}

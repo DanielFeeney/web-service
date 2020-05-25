@@ -1,0 +1,163 @@
+package br.edu.ifms.service.cliente;
+
+import javax.swing.JOptionPane;
+
+import br.edu.ifms.entity.Pessoa;
+import br.edu.ifms.entity.Pessoas;
+import br.edu.ifms.services.ServiceClient;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+        String opcao = JOptionPane.showInputDialog(null,
+        		"Escolha uma opção: \n"+
+        		"1-CADASTRAR | " +
+        		"2-CONSULTAR | " +
+        		"3-EXCLUIR | " +
+        		"4-ALTERAR | " +
+        		"5-LISTAR TODOS",
+        		"OPÇÕES",JOptionPane.PLAIN_MESSAGE);
+        if(opcao == null) {
+        	System.exit(0);
+        }
+        
+        switch(Integer.parseInt(opcao)) {
+        case 1:
+        	Cadastrar();
+        	break;
+        case 2:
+        	Consultar();
+        	break;
+        case 3:
+        	Excluir();
+        	break;
+        case 4:
+        	Alterar();
+        	break;
+        case 5:
+        	ListarTodos();
+        	break;
+        default:
+        	JOptionPane.showMessageDialog(null, "Opção inválida");
+        	main(null);
+        	break;
+        }
+    }
+
+	private static void ListarTodos() {
+		// TODO Auto-generated method stub
+		ServiceClient client = new ServiceClient();
+		Pessoas pessoas = client.ConsultarTodasPessoas();
+		
+		StringBuilder stringBuiderDetalhesPessoa = new StringBuilder();
+		
+		for(Pessoa pessoa : pessoas) {
+			stringBuiderDetalhesPessoa.append("Código: ");
+			stringBuiderDetalhesPessoa.append(pessoa.getCodigo());
+			stringBuiderDetalhesPessoa.append("Nome: ");
+			stringBuiderDetalhesPessoa.append(pessoa.getNome());
+			stringBuiderDetalhesPessoa.append("Sexo: ");
+			stringBuiderDetalhesPessoa.append(pessoa.getSexo());
+			stringBuiderDetalhesPessoa.append("\n\n");
+		}
+		JOptionPane.showMessageDialog(null, stringBuiderDetalhesPessoa.toString());
+		main(null);
+	}
+
+	private static void Alterar() {
+		// TODO Auto-generated method stub
+		ServiceClient client = new ServiceClient();
+		
+		String codigo = JOptionPane.showInputDialog(null, 
+		"Informe o código para alterar:", "Alterar", JOptionPane.PLAIN_MESSAGE);
+		
+		Pessoa pessoa = client.ConsultarPessoaPorCodigo(Integer.parseInt(codigo));
+		
+		if(pessoa == null) {
+			JOptionPane.showMessageDialog(null, "Pessoa não encontrada");
+			main(null);
+		}
+		else {
+			String nome = (String) JOptionPane.showInputDialog(null, 
+					"Nome:", "Alterar registro - Código:"
+					+ pessoa.getCodigo(), JOptionPane.PLAIN_MESSAGE, null,null,
+					pessoa.getNome());
+					
+			String sexo = (String) JOptionPane.showInputDialog(null, 
+			"Sexo: (M ou F)", "Alterar registro - Código:"
+			+ pessoa.getCodigo(), JOptionPane.PLAIN_MESSAGE, null,null,
+			pessoa.getNome());
+			
+			pessoa.setNome(nome);
+			pessoa.setSexo(sexo);
+			
+			String resultado = client.AlterarPessoa(pessoa);
+			
+			JOptionPane.showMessageDialog(null, resultado);
+			main(null);
+		}
+	}
+
+	private static void Excluir() {
+		// TODO Auto-generated method stub
+		ServiceClient client = new ServiceClient();
+		
+		String codigo = JOptionPane.showInputDialog(null, 
+		"Informe o código para excluir:", "Excluir", JOptionPane.PLAIN_MESSAGE);
+		
+		String resultado = client.ExcluirPessoaPorCodigo(Integer.parseInt(codigo));
+		JOptionPane.showMessageDialog(null, resultado);
+		main(null);
+		
+	}
+
+	private static void Consultar() {
+		// TODO Auto-generated method stub
+		ServiceClient client = new ServiceClient();
+		
+		String codigo = JOptionPane.showInputDialog(null, 
+		"Informe o código para consulta:", "Consultar", JOptionPane.PLAIN_MESSAGE);
+		
+		Pessoa pessoa = client.ConsultarPessoaPorCodigo(Integer.parseInt(codigo));
+		
+		if(pessoa == null) {
+			JOptionPane.showMessageDialog(null, "Pessoa não encontrada");
+			main(null);
+		}
+		else {
+			String resultado = "";
+			resultado = "Código: " + pessoa.getCodigo() + "\n";
+			resultado = "Nome: " + pessoa.getNome() + "\n";
+			resultado = "Sexo: " + pessoa.getSexo() + "\n";
+			JOptionPane.showMessageDialog(null, resultado);
+			main(null);
+		}
+	}
+
+	private static void Cadastrar() {
+		// TODO Auto-generated method stub
+		ServiceClient client = new ServiceClient();
+		
+		String nome = JOptionPane.showInputDialog(null, 
+		"Nome:", "Novo Cadastro", JOptionPane.PLAIN_MESSAGE);
+		
+		String sexo = JOptionPane.showInputDialog(null, 
+		"Sexo: (M ou F)", "Novo Cadastro", JOptionPane.PLAIN_MESSAGE);
+		
+		Pessoa pessoa = new Pessoa();
+		pessoa.setNome(nome);
+		pessoa.setSexo(sexo);
+		
+		String resultado = client.CadastrarPessoa(pessoa);
+		
+		JOptionPane.showMessageDialog(null, resultado);
+		
+		main(null);
+		
+	}
+}

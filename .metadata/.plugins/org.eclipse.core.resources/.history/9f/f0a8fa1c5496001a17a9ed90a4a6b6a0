@@ -1,0 +1,54 @@
+package br.edu.ifms.repository;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+import br.edu.ifms.entity.AnimalEntity;
+
+public class PessoaRepository {
+
+	private final EntityManagerFactory entityManagerFactory;
+	
+	private final EntityManager entityManager;
+
+	public PessoaRepository() {
+		this.entityManagerFactory = Persistence.createEntityManagerFactory("persistence_unit_db_estudo");
+		this.entityManager = this.entityManagerFactory.createEntityManager();
+	}
+	
+	
+	public void salvar(AnimalEntity pessoaEntity) {
+		this.entityManager.getTransaction().begin();
+		this.entityManager.persist(pessoaEntity);
+		this.entityManager.getTransaction().commit();
+	}
+	
+	public void Alterar(AnimalEntity pessoaEntity) {
+		this.entityManager.getTransaction().begin();
+		this.entityManager.merge(pessoaEntity);
+		this.entityManager.getTransaction().commit();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<AnimalEntity> TodasPessoas(){
+		return this.entityManager.createQuery("Select p from PessoaEntity p ORDER BY p.nome").getResultList();
+	}
+	
+	public AnimalEntity GetPessoa(Integer codigo){
+		return this.entityManager.find(AnimalEntity.class, codigo);
+	}
+	
+	public void Exluir(Integer codigo) {
+		
+		AnimalEntity pessoa = this.GetPessoa(codigo);
+		
+		this.entityManager.getTransaction().begin();
+		this.entityManager.remove(pessoa);
+		this.entityManager.getTransaction().commit();
+	}
+	
+	
+}

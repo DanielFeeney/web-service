@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://servico.ifms.edu.br" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://servico.ifms.edu.br" xmlns:intf="http://servico.ifms.edu.br" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://servico.ifms.edu.br" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="recebendoStringXML">
+    <complexType>
+     <sequence>
+      <element name="xmlCliente" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="recebendoStringXMLResponse">
+    <complexType>
+     <sequence>
+      <element name="recebendoStringXMLReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="recebendoStringXMLResponse">
+
+      <wsdl:part element="impl:recebendoStringXMLResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="recebendoStringXMLRequest">
+
+      <wsdl:part element="impl:recebendoStringXML" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="Servico">
+
+      <wsdl:operation name="recebendoStringXML">
+
+         <wsdl:input message="impl:recebendoStringXMLRequest" name="recebendoStringXMLRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:recebendoStringXMLResponse" name="recebendoStringXMLResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="ServicoSoapBinding" type="impl:Servico">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="recebendoStringXML">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="recebendoStringXMLRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="recebendoStringXMLResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="ServicoService">
+
+      <wsdl:port binding="impl:ServicoSoapBinding" name="Servico">
+
+         <wsdlsoap:address location="http://localhost:8080/webService/services/Servico"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

@@ -1,0 +1,38 @@
+package br.edu.ifms.servico;
+
+import com.thoughtworks.xstream.XStream;
+
+import br.edu.ifms.model.Carrinho;
+import br.edu.ifms.model.Produto;
+
+public class Servico {
+
+	public String recebendoStringXML(String xmlCliente) {
+		if(xmlCliente != null) {
+			System.out.print("Imprimindo arquivo recebido no webservice : "
+					+ xmlCliente);
+			
+			XStream xstream = new XStream();
+			Carrinho  novoCarrinho = (Carrinho) xstream.fromXML(xmlCliente);
+			
+			System.out.println("id cliente = " + novoCarrinho.getId());
+			System.out.println("rua cliente = " + novoCarrinho.getRua());
+			System.out.println("cidade cliente = " + novoCarrinho.getCidade());
+			System.out.println("Listando os produtos:");
+			
+			for(Produto produto : novoCarrinho.getProdutos()) {
+				System.out.println("id produto = " + produto.getId());
+				System.out.println("nome produto = " + produto.getNome());
+				System.out.println("preço produto = " + produto.getPreco());
+				System.out.println("quantidade produto = " + produto.getQuantidade());
+			}
+			
+			return "Arquivo recebido com sucesso";
+		}
+		else {
+			return "Arquivo com defeito: não processado";
+		}
+		
+		
+	}
+}

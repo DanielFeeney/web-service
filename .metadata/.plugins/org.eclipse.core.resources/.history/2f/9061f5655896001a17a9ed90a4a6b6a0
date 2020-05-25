@@ -1,0 +1,163 @@
+package br.edu.ifms.service.cliente;
+
+import javax.swing.JOptionPane;
+
+import br.edu.ifms.entity.Animal;
+import br.edu.ifms.entity.Animais;
+import br.edu.ifms.services.ServiceClient;
+
+/**
+ * Hello world!
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+        String opcao = JOptionPane.showInputDialog(null,
+        		"Escolha uma opção: \n"+
+        		"1-CADASTRAR | " +
+        		"2-CONSULTAR | " +
+        		"3-EXCLUIR | " +
+        		"4-ALTERAR | " +
+        		"5-LISTAR TODOS",
+        		"OPÇÕES",JOptionPane.PLAIN_MESSAGE);
+        if(opcao == null) {
+        	System.exit(0);
+        }
+        
+        switch(Integer.parseInt(opcao)) {
+        case 1:
+        	Cadastrar();
+        	break;
+        case 2:
+        	Consultar();
+        	break;
+        case 3:
+        	Excluir();
+        	break;
+        case 4:
+        	Alterar();
+        	break;
+        case 5:
+        	ListarTodos();
+        	break;
+        default:
+        	JOptionPane.showMessageDialog(null, "Opção inválida");
+        	main(null);
+        	break;
+        }
+    }
+
+	private static void ListarTodos() {
+		// TODO Auto-generated method stub
+		ServiceClient client = new ServiceClient();
+		Animais animals = client.ConsultarTodasAnimals();
+		
+		StringBuilder stringBuiderDetalhesAnimal = new StringBuilder();
+		
+		for(Animal animal : animals) {
+			stringBuiderDetalhesAnimal.append("Código: ");
+			stringBuiderDetalhesAnimal.append(animal.getCodigo());
+			stringBuiderDetalhesAnimal.append("Nome: ");
+			stringBuiderDetalhesAnimal.append(animal.getNome());
+			stringBuiderDetalhesAnimal.append("Sexo: ");
+			stringBuiderDetalhesAnimal.append(animal.getSexo());
+			stringBuiderDetalhesAnimal.append("\n\n");
+		}
+		JOptionPane.showMessageDialog(null, stringBuiderDetalhesAnimal.toString());
+		main(null);
+	}
+
+	private static void Alterar() {
+		// TODO Auto-generated method stub
+		ServiceClient client = new ServiceClient();
+		
+		String codigo = JOptionPane.showInputDialog(null, 
+		"Informe o código para alterar:", "Alterar", JOptionPane.PLAIN_MESSAGE);
+		
+		Animal animal = client.ConsultarAnimalPorCodigo(Integer.parseInt(codigo));
+		
+		if(animal == null) {
+			JOptionPane.showMessageDialog(null, "Animal não encontrada");
+			main(null);
+		}
+		else {
+			String nome = (String) JOptionPane.showInputDialog(null, 
+					"Nome:", "Alterar registro - Código:"
+					+ animal.getCodigo(), JOptionPane.PLAIN_MESSAGE, null,null,
+					animal.getNome());
+					
+			String sexo = (String) JOptionPane.showInputDialog(null, 
+			"Sexo: (M ou F)", "Alterar registro - Código:"
+			+ animal.getCodigo(), JOptionPane.PLAIN_MESSAGE, null,null,
+			animal.getNome());
+			
+			animal.setNome(nome);
+			animal.setSexo(sexo);
+			
+			String resultado = client.AlterarAnimal(animal);
+			
+			JOptionPane.showMessageDialog(null, resultado);
+			main(null);
+		}
+	}
+
+	private static void Excluir() {
+		// TODO Auto-generated method stub
+		ServiceClient client = new ServiceClient();
+		
+		String codigo = JOptionPane.showInputDialog(null, 
+		"Informe o código para excluir:", "Excluir", JOptionPane.PLAIN_MESSAGE);
+		
+		String resultado = client.ExcluirAnimalPorCodigo(Integer.parseInt(codigo));
+		JOptionPane.showMessageDialog(null, resultado);
+		main(null);
+		
+	}
+
+	private static void Consultar() {
+		// TODO Auto-generated method stub
+		ServiceClient client = new ServiceClient();
+		
+		String codigo = JOptionPane.showInputDialog(null, 
+		"Informe o código para consulta:", "Consultar", JOptionPane.PLAIN_MESSAGE);
+		
+		Animal animal = client.ConsultarAnimalPorCodigo(Integer.parseInt(codigo));
+		
+		if(animal == null) {
+			JOptionPane.showMessageDialog(null, "Animal não encontrada");
+			main(null);
+		}
+		else {
+			String resultado = "";
+			resultado = "Código: " + animal.getCodigo() + "\n";
+			resultado = "Nome: " + animal.getNome() + "\n";
+			resultado = "Sexo: " + animal.getSexo() + "\n";
+			JOptionPane.showMessageDialog(null, resultado);
+			main(null);
+		}
+	}
+
+	private static void Cadastrar() {
+		// TODO Auto-generated method stub
+		ServiceClient client = new ServiceClient();
+		
+		String nome = JOptionPane.showInputDialog(null, 
+		"Nome:", "Novo Cadastro", JOptionPane.PLAIN_MESSAGE);
+		
+		String sexo = JOptionPane.showInputDialog(null, 
+		"Sexo: (M ou F)", "Novo Cadastro", JOptionPane.PLAIN_MESSAGE);
+		
+		Animal animal = new Animal();
+		animal.setNome(nome);
+		animal.setSexo(sexo);
+		
+		String resultado = client.CadastrarAnimal(animal);
+		
+		JOptionPane.showMessageDialog(null, resultado);
+		
+		main(null);
+		
+	}
+}

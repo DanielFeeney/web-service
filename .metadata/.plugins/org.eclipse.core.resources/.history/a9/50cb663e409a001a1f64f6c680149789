@@ -1,0 +1,36 @@
+package br.edu.ifms.dao;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import br.edu.ifms.model.Carrinho;
+import br.edu.ifms.model.Produto;
+
+public class CarrinhoDao {
+	
+	private static Map<Long, Carrinho> banco = 
+			           new HashMap<Long, Carrinho>();
+	
+	static {
+		
+		Produto videogame = new Produto(6237,"Videogame 4",4000,1);
+		Produto esporte = new Produto(3467,"Jogo de esporte",60,1);
+		
+		Carrinho carrinho = new Carrinho()
+				                          .adiciona(videogame)
+				                          .adiciona(esporte)
+				                          .para("Rua Afonso Pena, 2345",
+				                        		  "Campo Grande")
+				                          .setId(1l);
+		banco.put(1l, carrinho);
+		
+		
+	}
+	
+	public Carrinho busca(Long id) {
+		return banco.get(id);
+	}
+	
+	
+
+}

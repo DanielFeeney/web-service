@@ -1,0 +1,54 @@
+package br.edu.ifms.http;
+
+import javax.persistence.Column;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
+public class Animal {
+	
+	private Integer codigo;
+	
+	private String nome;
+	
+	private String sexo;
+	
+	
+
+	public Animal() {
+	}
+
+	public Animal(Integer codigo, String nome, String sexo) {
+		this.codigo = codigo;
+		this.nome = nome;
+		this.sexo = sexo;
+	}
+
+	public Integer getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+	
+	
+
+	
+
+}

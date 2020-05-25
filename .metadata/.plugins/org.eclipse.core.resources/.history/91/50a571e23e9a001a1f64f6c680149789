@@ -1,0 +1,70 @@
+package br.edu.ifms.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.thoughtworks.xstream.XStream;
+
+public class Cliente {
+	private List<Cachorro> produtos = new ArrayList<Cachorro>();
+    private String rua;
+    private String cidade;
+    private long id;
+    
+    /*
+     * Recebe um produto de cada vez e adiciona no
+     * Carrinho e retorna o mesmo.
+     */
+    public Cliente adiciona(Cachorro produto) {
+    	produtos.add(produto);
+    	return this;
+    }
+    
+    /*
+     * Este metodo será utilizado para popular os atributos
+     * rua e cidade
+     */
+    public Cliente para (String rua, String cidade) {
+    	this.rua = rua;
+    	this.cidade = cidade;
+    	return this;
+    }
+
+	public List<Cachorro> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Cachorro> produtos) {
+		this.produtos = produtos;
+	}
+
+	public String getRua() {
+		return rua;
+	}
+
+	public void setRua(String rua) {
+		this.rua = rua;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public Cliente setId(long id) {
+		this.id = id;
+		return this;
+	}
+    
+    public String toXML() {
+    	return new XStream().toXML(this);
+    }
+    
+}
